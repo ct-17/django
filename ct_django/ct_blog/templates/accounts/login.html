@@ -1,0 +1,20 @@
+{% extends "page/page.html" %}
+{% load crispy_forms_tags %}
+{% block title %}LOGIN | CT{% endblock %}
+{% block content %}
+    <div class="col-sm-4 form-group-lg mx-auto">
+        <center><h1>Đăng nhập</h1></center>
+    </div>
+    <hr/>
+    <div class="col-sm-4 form-group-lg mx-auto">
+        <form method="POST" action='.' enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="hidden" name="next" value="/" />
+            <center><a href="{% url 'register' %}">Đăng kí tài khoản.</a></center>
+            <br/>
+            <center><input class="btn btn-primary" type="submit" value="Đăng nhập"/></center>
+        </form>
+    </div>
+{% endblock %}
+            

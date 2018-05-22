@@ -1,0 +1,24 @@
+{% extends "page/page.html" %}
+{% load crispy_forms_tags %}
+{% block title %}register | CT{% endblock %}
+{% block content %}
+    <div class="col-sm-4 form-group-lg mx-auto">
+        <center><h1>Đăng kí</h1></center>
+    </div>
+    <hr/>
+    <div class="col-sm-4 form-group-lg mx-auto">
+        <form class="form-group">
+            <button type="button" class="btn btn-primary btn-lg btn-block">Đăng kí bằng Facebook</button>
+        </form>
+        <center><p>hoặc</p></center>
+        <center><h5>Đăng kí bằng địa chỉ email của bạn</h5></center>
+        <form method="POST" action='.' enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="hidden" name="next" value="/" />
+            <br/>
+            <center><input class="btn btn-primary" type="submit" value="Đăng kí"></center>
+        </form>
+    </div>
+{% endblock %}
+            
