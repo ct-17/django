@@ -1,5 +1,16 @@
 {% extends "page/page.html" %}
 {% block title %}Mobile | CT{% endblock %}
 {% block content %}
-    <h1>mobile</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="page-header">
+        <a href="{% url 'mobile:create' %}" class="top-menu">Đăng bài</a>
+    </div> 
+    {% include 'mobile/list.html' %}
 {% endblock %}

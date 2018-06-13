@@ -17,16 +17,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf.urls import url, include
-from home.views import home, mobile
 from accounts.views import RegisterView, LoginView
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url('admin/', admin.site.urls),
-    url(r'^$', home),
-    url(r'^home/$',home, name='home'),
-    url(r'^mobile/$', mobile, name='mobile'),
+    url(r'^', include('home.urls')),
+    url(r'^home/', include(('home.urls', 'home'), namespace='home')),
+    url(r'^mobile/', include(('mobile.urls', 'mobile'), namespace='mobile')),
     url(r'^iot/', include(('iot.urls', 'iot'), namespace='iot')),
+    url(r'^internet/', include(('internet.urls', 'internet'), namespace='internet')),
+    url(r'^search/', include(('search.urls', 'search'), namespace='search')),
     url(r'^login/$',LoginView.as_view(), name='login'),
     url(r'^register/$',RegisterView.as_view(), name='register'),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),

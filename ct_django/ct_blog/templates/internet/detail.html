@@ -1,0 +1,18 @@
+{% extends "page/page.html" %}
+{% block title %}internet | CT{% endblock %}
+{% block content %}
+    <h1>{{ object.title }}</h1>
+    <p>{{ object.publish_date }}</p>
+    {% if object.img %}
+        <img src="{{ object.img.url }}" width="730px" height="400px"></img>
+    {% endif %}
+    <p>{{ object.content }}</p>
+    <a href="{% url 'internet:comments' id=object.id %}">Bình luận</a>
+    {% for comment in object.comments.all %}
+        <h5>{{ comment.author }}</h5>
+        <p>{{ comment.date }}</p>
+        <p>{{ comment.body }}</p>
+    {% empty %}
+        <p>Hiện tại chưa có bình luận nào.</p>
+    {% endfor %}
+{% endblock %}

@@ -2,11 +2,12 @@
 {% block title %}IOT | CT{% endblock %}
 {% block content %}
     <h1>{{ object.title }}</h1>
-    <p>{{ object.upload_time }}</p>
-    <img src="{{ object.img.url }}" width="730px" height="400px"></img>
-    <p>{{ object.contend }}</p>
-
-    <a href="{% url 'iot:comments' pk=object.pk %}">Bình luận</a>
+    <p>{{ object.publish_date }}</p>
+    {% if object.img %}
+        <img src="{{ object.img.url }}" width="730px" height="400px"></img>
+    {% endif %}
+    <p>{{ object.content }}</p>
+    <a href="{% url 'iot:comments' id=object.id %}">Bình luận</a>
     {% for comment in object.comments.all %}
         <h5>{{ comment.author }}</h5>
         <p>{{ comment.date }}</p>

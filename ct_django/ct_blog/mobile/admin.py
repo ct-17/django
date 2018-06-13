@@ -1,4 +1,5 @@
 from django.contrib import admin
-from .models import MobileModel
+from .models import PostModel, Comment
 
-admin.site.register(MobileModel)
+admin.site.register(PostModel)
+admin.site.register(Comment)
