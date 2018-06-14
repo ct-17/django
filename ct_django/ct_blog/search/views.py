@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-from iot.models import PostModel as Search_iot
-from internet.models import PostModel as Search_internet
-from mobile.models import PostModel as Search_mobile
+from blog.models import PostModel as Search_blog
 
 class Search(ListView):
     template_name = "search/view.html"
@@ -19,5 +17,5 @@ class Search(ListView):
         method_dict = request.GET
         query = method_dict.get('q', None) # method_dict['q']
         if query is not None:
-            return Search_iot.objects.search(query)  #and Search_internet.objects.search(query) and Search_mobile.objects.search(query)
-        return Search_iot.objects.featured()
+            return Search_blog.objects.search(query)  #and Search_internet.objects.search(query) and Search_mobile.objects.search(query)
+        return Search_blog.objects.featured()

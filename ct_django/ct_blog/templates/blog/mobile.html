@@ -1,0 +1,27 @@
+{% extends "page/page.html" %}
+{% block title %}mobile | CT{% endblock %}
+{% block content %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="page-header">
+        <a href="{% url 'blog:create' %}" class="top-menu">Đăng bài</a>
+    </div> 
+    {% for i in object_list %}
+        {% if i.kind == "mobile" %}
+        <div class="row p-2">
+            <div class="col-md-9 " style="background-color: #696969">
+                <a class="text-white" href="/blog/{{ i.id }}/">{{ i.title }}</a>
+            </div>
+            <div class="col-md-3" style="background-color: #696969"><p>{{ i.timestamp }}</p></div>
+        </div>
+        {% endif %}
+    {% empty %}
+        <li>Không có dữ liệu.</li>
+    {% endfor %}
+{% endblock %}

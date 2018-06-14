@@ -9,18 +9,19 @@ from django.utils.text import slugify
 from django.utils.timesince import timesince
 
 
-
-#from .validators import validate_author_email, validate_justin
-
 PUBLISH_CHOICES = [
-        ('draft', 'nháp'),
-        ('publish', 'công khai'),
-        ('private', 'riêng tư'),
+        ('computer', 'máy tính'),
+        ('mobile', 'điện thoại'),
+        ('technology', 'công nghệ'),
+        ('games', 'games'),
     ]
 
 class PostModelQuerySet(models.query.QuerySet):
     def active(self):
         return self.filter(active=True)
+
+    def kind(self):
+        return self.filter(kind="computer")
 
     def post_title_items(self, value):
         return self.filter(title__icontains=value)
@@ -65,10 +66,9 @@ class PostModel(models.Model):
     slug            = models.SlugField(null=True, blank=True, )
     img             = models.ImageField(null=True, blank=True, upload_to='blog/', verbose_name='Ảnh:')
     content         = models.TextField(null=True, blank=True, verbose_name='Nội Dung:')
-    publish         = models.CharField(max_length=120, choices=PUBLISH_CHOICES, default='draft', verbose_name='Kiểu Bài Đăng:')
+    kind            = models.CharField(max_length=120, choices=PUBLISH_CHOICES, verbose_name='Kiểu Bài Đăng:')
     view_count      = models.IntegerField(default=0, verbose_name='Lượt Xem:')
     publish_date    = models.DateField(auto_now=False, auto_now_add=False, default=timezone.now, verbose_name='Ngày Xuất Bản:')
-    #author_email    = models.EmailField(max_length=240, null=True, blank=True, verbose_name='Người Đăng Bài:')
     author          = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, verbose_name='Người Đăng Bài:', related_name='author_blog1')
     updated         = models.DateTimeField(auto_now=True)
     timestamp       = models.DateTimeField(auto_now_add=True)
@@ -88,10 +88,10 @@ class PostModel(models.Model):
 
     def __str__(self): #python 3
         return smart_text(self.title)
-
+'''
     @property
     def age(self):
-        if self.publish == 'publish':
+        if self.kind== 'kind':
             now = datetime.now()
             publish_time = datetime.combine(
                                 self.publish_date,
@@ -105,7 +105,7 @@ class PostModel(models.Model):
                 return 'vừa nãy'
             return '{time} trước đây'.format(time= timesince(publish_time).split(', ')[0])
         return "Chưa xuất bản"
-
+'''
 
 
 def blog_post_model_pre_save_receiver(sender, instance, *args, **kwargs):

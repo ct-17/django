@@ -10,7 +10,7 @@ from .models import PostModel
 
 #@login_required
 def post_model_create_view(request):
-    form = PostModelForm(request.POST or None)
+    form = PostModelForm(request.POST, request.FILES)
     context = {
         "form": form
     }
@@ -18,10 +18,11 @@ def post_model_create_view(request):
         obj = form.save(commit=False)
         obj.author = request.user
         obj.save()
-        messages.success(request, "Đã tạo một bài đăng blog mới!")
+        #messages.success(request, "Đã tạo một bài đăng blog mới!")
         context = {
             "form": PostModelForm()
         }
+        return HttpResponseRedirect("/blog/{num}".format(num=obj.id))
     
     template = "blog/post.html"
     return render(request, template, context)
@@ -78,7 +79,7 @@ def post_model_list_view(request):
     context = {
         "object_list": qs,
     }
-    template = "blog/blog.html"
+    template = "blog/home.html"
     return render(request, template, context)
 
 
@@ -92,7 +93,7 @@ def login_required_view(request):
     }
 
     if request.user.is_authenticated():
-        template = "blog/blog.html"
+        template = "blog/home.html"
     else:
         template = "blog/list-view-public.html"
         #raise Http404
@@ -114,7 +115,7 @@ def post_model_robust_view(request, id=None):
     else:
         "obj prob exists"
         obj = get_object_or_404(PostModel, id=id)
-        success_message = 'Một bài đăng mới đã được tạo'
+        #success_message = 'Một bài đăng mới đã được tạo'
         context["object"] = obj
         template = "blog/detail.html"
         if "edit" in request.get_full_path():
@@ -151,3 +152,79 @@ def comments(request, id):
     else:
         form = CommentForm()
         return render(request, 'blog/comments.html', {"form":form})
+
+def home(request):
+    query = request.GET.get("q", None)
+    qs = PostModel.objects.all()
+    if query is not None:
+        qs = qs.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(slug__icontains=query)
+                )
+    context = {
+        "object_list": qs,
+    }
+    template = "blog/home.html"
+    return render(request, template, context)
+
+def computer(request):
+    query = request.GET.get("q", None)
+    qs = PostModel.objects.all()
+    if query is not None:
+        qs = qs.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(slug__icontains=query)
+                )
+
+    context = {
+        "object_list": qs,
+    }
+    template = "blog/computer.html"
+    return render(request, template, context)
+
+def mobile(request):
+    query = request.GET.get("q", None)
+    qs = PostModel.objects.all()
+    if query is not None:
+        qs = qs.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(slug__icontains=query)
+                )
+    context = {
+        "object_list": qs,
+    }
+    template = "blog/mobile.html"
+    return render(request, template, context)
+
+def technology(request):
+    query = request.GET.get("q", None)
+    qs = PostModel.objects.all()
+    if query is not None:
+        qs = qs.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(slug__icontains=query)
+                )
+    context = {
+        "object_list": qs,
+    }
+    template = "blog/technology.html"
+    return render(request, template, context)
+
+def games(request):
+    query = request.GET.get("q", None)
+    qs = PostModel.objects.all()
+    if query is not None:
+        qs = qs.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(slug__icontains=query)
+                )
+    context = {
+        "object_list": qs,
+    }
+    template = "blog/games.html"
+    return render(request, template, context)

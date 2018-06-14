@@ -5,6 +5,7 @@ class PostModelForm(forms.ModelForm):
     class Meta:
         model = PostModel
         fields = [
+            'kind',
             'title',
             'img',
             'content'

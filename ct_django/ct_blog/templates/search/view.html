@@ -8,7 +8,7 @@
             <hr/>
         </div>
     {% else %}
-        <div class='col-12 col-md-6 mx-auto py-5'>
+        <div class='col-12'>
             {% include 'search/snippets/search-form.html' %}
         </div>
         <div class='col-12'>
@@ -20,11 +20,7 @@
 <div class='row'>
     {% for obj in object_list %}
         <div class='col'>
-        {% include 'iot/list.html' with instance=obj %}
-        <!--
-        {% include 'mobile/list.html' with instance=obj %}
-        {% include 'internet/list.html' with instance=obj %}
-        -->
+        {% include 'blog/list.html' with instance=obj %}
         
         {% if forloop.counter|divisibleby:3 %}
          </div> </div><div class='row'><div class='col-12'><hr/></div>

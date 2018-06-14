@@ -22,11 +22,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url('admin/', admin.site.urls),
-    url(r'^', include('home.urls')),
-    url(r'^home/', include(('home.urls', 'home'), namespace='home')),
-    url(r'^mobile/', include(('mobile.urls', 'mobile'), namespace='mobile')),
-    url(r'^iot/', include(('iot.urls', 'iot'), namespace='iot')),
-    url(r'^internet/', include(('internet.urls', 'internet'), namespace='internet')),
+    url(r'^', include('blog.urls')),
+    url(r'^blog/', include(('blog.urls', 'blog'), namespace='blog')),
     url(r'^search/', include(('search.urls', 'search'), namespace='search')),
     url(r'^login/$',LoginView.as_view(), name='login'),
     url(r'^register/$',RegisterView.as_view(), name='register'),

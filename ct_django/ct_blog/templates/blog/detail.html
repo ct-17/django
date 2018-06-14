@@ -7,7 +7,14 @@
         <img src="{{ object.img.url }}" width="730px" height="400px"></img>
     {% endif %}
     <p>{{ object.content }}</p>
-    <a href="{% url 'blog:comments' id=object.id %}">Bình luận</a>
+    
+    {% if request.user.is_authenticated %}
+        {% include 'blog/comments.html' %}
+        <!-- <a href="{% url 'blog:comments' id=object.id %}">Bình luận</a> -->
+    {% else %}
+        <p>( Bạn cần đăng nhập để mình luận. )</p>
+    {% endif %}
+
     {% for comment in object.comments.all %}
         <h5>{{ comment.author }}</h5>
         <p>{{ comment.date }}</p>
@@ -15,4 +22,5 @@
     {% empty %}
         <p>Hiện tại chưa có bình luận nào.</p>
     {% endfor %}
+
 {% endblock %}
