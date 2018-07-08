@@ -1,0 +1,39 @@
+.row.content {height: 900px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+
+    
+    /*Trên màn hình nhỏ, đặt chiều cao thành 'tự động' cho sidenav và lưới */
+    @media screen and (max-width: 1000px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+
+ .a {
+  border:1px;
+  position:relative;
+  opacity:.95;
+  color:#fff;
+ }
+
+.ab {
+  background-color: #555;
+  color:#fff;
+  position:relative; 
+  opacity:.98;
+  margin-bottom: 10px;
+}
+
+footer {
+  background-color: #444444;
+  color: white;
+  padding: 15px;
+}

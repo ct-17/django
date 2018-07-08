@@ -1,11 +1,15 @@
+import os
+
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import PostModelForm, CommentForm
-from .models import PostModel
+from .forms import CommentForm, PostModelForm
+from .models import Comment, PostModel
 
 
 #@login_required
@@ -45,9 +49,17 @@ def post_model_update_view(request, id=None):
 
 
 def post_model_detail_view(request, id=None):
-    obj = get_object_or_404(PostModel, id=id)
+    post = get_object_or_404(PostModel, id=id)
+    form = CommentForm()
+    if request.method == 'POST':
+        form = CommentForm(request.POST, author=request.user, post=post)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path)
+
     context = {
-        "object": obj,
+        "object": post,
+        "form": form,
     }
     template = "blog/detail.html"
     return render(request, template, context)
@@ -69,7 +81,23 @@ def post_model_delete_view(request, id=None):
 
 def post_model_list_view(request):
     query = request.GET.get("q", None)
-    qs = PostModel.objects.all()
+    qs = PostModel.objects.all().order_by('-publish_date')
+    paginator = Paginator(qs, 12)
+    page = request.GET.get('page')
+
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
+    index = items.number - 1
+    max_index = len(paginator.page_range)
+    start_index = index - 5 if index >= 5 else 0
+    end_index = index + 5 if index <= max_index - 5 else max_index
+    page_range = paginator.page_range[start_index:end_index]
+
     if query is not None:
         qs = qs.filter(
                 Q(title__icontains=query) |
@@ -78,6 +106,8 @@ def post_model_list_view(request):
                 )
     context = {
         "object_list": qs,
+        "items": items,
+        "page_range": page_range,
     }
     template = "blog/home.html"
     return render(request, template, context)
@@ -155,7 +185,23 @@ def comments(request, id):
 
 def home(request):
     query = request.GET.get("q", None)
-    qs = PostModel.objects.all()
+    qs = PostModel.objects.all().order_by('-publish_date')
+    paginator = Paginator(qs, 12)
+    page = request.GET.get('page')
+
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
+    index = items.number - 1
+    max_index = len(paginator.page_range)
+    start_index = index - 5 if index >= 5 else 0
+    end_index = index + 5 if index <= max_index - 5 else max_index
+    page_range = paginator.page_range[start_index:end_index]
+
     if query is not None:
         qs = qs.filter(
                 Q(title__icontains=query) |
@@ -164,29 +210,64 @@ def home(request):
                 )
     context = {
         "object_list": qs,
+        "items": items,
+        "page_range": page_range,
     }
     template = "blog/home.html"
     return render(request, template, context)
 
 def computer(request):
     query = request.GET.get("q", None)
-    qs = PostModel.objects.all()
+    qs = PostModel.objects.all().order_by('-publish_date').filter(kind="computer")
+    paginator = Paginator(qs, 12)
+    page = request.GET.get('page')
+
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
+    index = items.number - 1
+    max_index = len(paginator.page_range)
+    start_index = index - 5 if index >= 5 else 0
+    end_index = index + 5 if index <= max_index - 5 else max_index
+    page_range = paginator.page_range[start_index:end_index]
+
     if query is not None:
         qs = qs.filter(
                 Q(title__icontains=query) |
                 Q(content__icontains=query) |
                 Q(slug__icontains=query)
                 )
-
     context = {
         "object_list": qs,
+        "items": items,
+        "page_range": page_range,
     }
     template = "blog/computer.html"
     return render(request, template, context)
 
 def mobile(request):
     query = request.GET.get("q", None)
-    qs = PostModel.objects.all()
+    qs = PostModel.objects.all().order_by('-publish_date').filter(kind="mobile")
+    paginator = Paginator(qs, 12)
+    page = request.GET.get('page')
+
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
+    index = items.number - 1
+    max_index = len(paginator.page_range)
+    start_index = index - 5 if index >= 5 else 0
+    end_index = index + 5 if index <= max_index - 5 else max_index
+    page_range = paginator.page_range[start_index:end_index]
+
     if query is not None:
         qs = qs.filter(
                 Q(title__icontains=query) |
@@ -195,13 +276,31 @@ def mobile(request):
                 )
     context = {
         "object_list": qs,
+        "items": items,
+        "page_range": page_range,
     }
     template = "blog/mobile.html"
     return render(request, template, context)
 
 def technology(request):
     query = request.GET.get("q", None)
-    qs = PostModel.objects.all()
+    qs = PostModel.objects.all().order_by('-publish_date').filter(kind="technology")
+    paginator = Paginator(qs, 12)
+    page = request.GET.get('page')
+
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
+    index = items.number - 1
+    max_index = len(paginator.page_range)
+    start_index = index - 5 if index >= 5 else 0
+    end_index = index + 5 if index <= max_index - 5 else max_index
+    page_range = paginator.page_range[start_index:end_index]
+
     if query is not None:
         qs = qs.filter(
                 Q(title__icontains=query) |
@@ -210,13 +309,31 @@ def technology(request):
                 )
     context = {
         "object_list": qs,
+        "items": items,
+        "page_range": page_range,
     }
     template = "blog/technology.html"
     return render(request, template, context)
 
 def games(request):
     query = request.GET.get("q", None)
-    qs = PostModel.objects.all()
+    qs = PostModel.objects.all().order_by('-publish_date').filter(kind="games")
+    paginator = Paginator(qs, 12)
+    page = request.GET.get('page')
+
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
+    index = items.number - 1
+    max_index = len(paginator.page_range)
+    start_index = index - 5 if index >= 5 else 0
+    end_index = index + 5 if index <= max_index - 5 else max_index
+    page_range = paginator.page_range[start_index:end_index]
+
     if query is not None:
         qs = qs.filter(
                 Q(title__icontains=query) |
@@ -225,6 +342,8 @@ def games(request):
                 )
     context = {
         "object_list": qs,
+        "items": items,
+        "page_range": page_range,
     }
     template = "blog/games.html"
     return render(request, template, context)

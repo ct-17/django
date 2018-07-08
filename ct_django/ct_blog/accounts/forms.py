@@ -81,4 +81,3 @@ class LoginForm(forms.Form):
         else:
             raise forms.ValidationError("Tài khoản hoặc mật khẩu không chính sác.")   
         #self.user = user
-        #return data

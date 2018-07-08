@@ -7,89 +7,55 @@
 {% url 'register' as register_url %}
 {% url 'logout' as logout_url %}
 
+
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    {% load staticfiles %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/page.css' %}" />
-    <title>{% block title %}{% endblock %}</title>
-    <script>
-        $(document).ready(function () {
-            $("#navbar").btrmenu();
-        });
-    </script>
-</head>
-<body>
-    <div>
-        <nav class="navbar navbar-expand-lg navbar-light navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="/">
-                    <img src="{% static "img/ct.png" %}" class="d-inline-block align-top" height="30" width="30" alt="" />
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav ">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ home_url }}">TRANG CHỦ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ computer_url }}">MÁY TÍNH</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ mobile_url }}">ĐIỆN THOẠI</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ technology_url }}">CÔNG NGHỆ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ games_url }}">GAMES</a>
-                        </li>
-                        {% if request.user.is_authenticated %}
-                            <li class="nav-item {% if request.path == logout_url %}active{% endif %}">
-                                <a class="nav-link" href="{{ logout_url }}">ĐĂNG XUẤT</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item {% if request.path == register_url %}active{% endif %}">
-                                <a class="nav-link" href="{{ register_url }}">ĐĂNG KÍ</a>
-                            </li>
-                            <li class="nav-item {% if request.path == login_url %}active{% endif %}">
-                                <a class="nav-link" href="{{ login_url }}">ĐĂNG NHẬP</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                    {% include 'search/snippets/search-form.html' %}
+    <head>
+        <meta charset="utf-8" />
+        {% load staticfiles %}
+        <!-- Custom fonts for this template -->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="{% static "css/a.css" %}" />
+        <link rel="shortcut icon" href="{% static 'img/ct.png' %}" />
+        <title>{% block title %}{% endblock %}</title>
+        <script>
+            $(document).ready(function () {
+                $("#navbar").btrmenu();
+            });
+        </script>
+        {% block head_extra %} {% endblock head_extra %}
+    </head>
+    <body>
+        <div style="margin-top: 66px">
+            {% include "page/menu.html" %}
+        </div>
+        <div class="container-fluid " style="background-image: url('{% static "img/nen.gif" %}'); background-repeat: no-repeat; background-attachment:fixed; background-size: cover;" >
+            <br />
+            <br />
+            <div class="row content" style="min-height: 880px; height: auto;">
+                <div class="col-0 col-sm-0 col-md-2 col-lg-2 col-xl-2" >
+                </div>
+                <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 rounded ">
+                    {% block content %}
+                    {% endblock %}             
+                    <br />
+                    {% block comment %}
+                    {% endblock %}
+                </div>      
+                <div class="col-0 col-sm-0 col-md-2 col-lg-2 col-xl-2" >
                 </div>
             </div>
-        </nav>
-    </div>
-    <br />
-    <div class="container"> 
-        <div class="row content mb-1">
-            <div class="col-sm-2 sidenav bg-secondary" >
-                <h3>Có thể bạn Chưa biết.</h3>
-            </div>
-            <div class="col-sm-8 container">
-                {% block content %}
-                {% endblock %}             
-                <br />
-                {% block comment %}
-                {% endblock %}
-            </div>      
-            <div class="col-sm-2 sidenav bg-secondary" >
-                <h3>Có thể bạn quan tâm.</h3> 
-            </div>
         </div>
-    </div> 
-    <div id="footer">
-        <h2>Nguyễn Mạnh Cường</h2>
-        <p>Liên hệ: Manhcuong88c@gmail.com</p>
-    </div>
-</body>
+        <footer class="container-fluid text-center">
+          <h3>Liên hệ:</h3>
+          <p>SĐT : 01696745838</p>
+          <p>EMAIL : manhcuong88c@gmail.com</p>
+        </footer>
+    </body>
 </html>

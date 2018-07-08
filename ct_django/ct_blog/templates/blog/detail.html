@@ -1,26 +1,60 @@
 {% extends "page/page.html" %}
 {% block title %}blog | CT{% endblock %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
 {% block content %}
-    <h1>{{ object.title }}</h1>
-    <p>{{ object.publish_date }}</p>
-    {% if object.img %}
-        <img src="{{ object.img.url }}" width="730px" height="400px"></img>
-    {% endif %}
-    <p>{{ object.content }}</p>
-    
-    {% if request.user.is_authenticated %}
-        {% include 'blog/comments.html' %}
-        <!-- <a href="{% url 'blog:comments' id=object.id %}">Bình luận</a> -->
-    {% else %}
-        <p>( Bạn cần đăng nhập để mình luận. )</p>
-    {% endif %}
-
-    {% for comment in object.comments.all %}
-        <h5>{{ comment.author }}</h5>
-        <p>{{ comment.date }}</p>
-        <p>{{ comment.body }}</p>
-    {% empty %}
-        <p>Hiện tại chưa có bình luận nào.</p>
-    {% endfor %}
-
+<div class="rounded ab">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <h2 style="margin-top: 20px">{{ object.title }}</h2>
+            <pre class="text-primary"><img src="{% static "img/user.png" %}"> {{ object.author }} | {{ object.timestamp }}</pre>
+            {% if object.img %}
+                <img class="rounded mx-auto d-block" alt="Lỗi ảnh" src="{{ object.img.url }}" width="100%" height="auto"></img>
+            {% endif %}
+            <br />
+            {{ object.content|safe }}
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <br />
+    <hr style="width: 83%; background-color: #444444" />
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+        {% if request.user.is_authenticated %}
+            <form action="{% url 'blog:detail' id=object.id %}" method='POST'>
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input class="btn btn-primary " type="submit" value="Bình Luận" />
+            </form>
+        {% else %}
+            <p>( Bạn cần đăng nhập để mình luận. )</p>
+        {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <br />
+    <hr style="width: 83%; background-color: #444444" />
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            {% for comment in object.comments.all %}
+            <div class="container">
+                <div class="row border border-white bg-dark align-items-center">
+                    <img src="{% static "img/user.png" %}" style="margin-left: 10px"><strong class="text-primary">{{ comment.author }}</strong><pre class="text-white" style="margin-top: 15px"><small class="text-white-50"> | {{ comment.date|timesince }}</small></pre>
+                </div>
+                <div class="row border border-white bg-secondary" style="margin-bottom: 30px">
+                    <div class="col-12">
+                        {{ comment.body|safe }}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <pre class="text-white">Hiện tại chưa có bình luận nào.</pre>
+            {% endfor %}
+        </div>
+        <div class="col-1"></div>
+    </div> 
+</div>
 {% endblock %}

@@ -12,13 +12,23 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script>
+    {{form.media}}
 </head>
 <body>
-    <h1>Tạo Bài Viết...</h1>
-    <form method="POST" action="." enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Đăng bài</button>
-    </form>
+    <div>
+        <div class="mx-auto">
+            <h1 class="text-center">Tạo Bài Viết Mới</h1>
+            <hr />
+        </div>
+        <div class="col-sm-5 mx-auto">
+            <form method="POST" action="." enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <br />
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng bài</button>
+            </form>
+        </div>
+        <div style="height: 100px;"></div>
+    </div>
 </body>
 </html>

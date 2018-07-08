@@ -1,4 +1,6 @@
 from django import forms
+
+from pagedown.widgets import PagedownWidget
 from .models import PostModel, Comment
 
 class PostModelForm(forms.ModelForm):
@@ -17,6 +19,11 @@ class CommentForm(forms.ModelForm):
         self.post = kwargs.pop('post',None)
         super().__init__(*args, **kwargs)
     
+    def save(self, commit= True):
+        comment = super().save(commit=False)
+        comment.author = self.author
+        comment.post = self.post
+        comment.save()
     class Meta:
         model = Comment
         fields = ["body"]

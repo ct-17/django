@@ -81,7 +81,7 @@ class PostModel(models.Model):
 
     class Meta:
         verbose_name = 'Bài Đăng'
-        verbose_name_plural = 'Đăng Bài'
+        verbose_name_plural = 'Bài Đăng'
 
     def __unicode__(self): #python 2
         return smart_text(self.title) #self.title
@@ -129,7 +129,7 @@ post_save.connect(blog_post_model_post_save_receiver, sender=PostModel)
 class Comment(models.Model):
     post = models.ForeignKey(PostModel, on_delete= models.CASCADE, related_name='comments')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE, related_name='author_blog2')
-    body = models.TextField()
+    body = models.TextField(verbose_name="Bình luận")
     date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
